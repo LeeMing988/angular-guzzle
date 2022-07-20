@@ -11,6 +11,9 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
+//Custom code for angular
+use Illuminate\Support\Facades\Cache;
+
 /**
  * @final
  */
@@ -271,6 +274,13 @@ class Client implements ClientInterface, \Psr\Http\Client\ClientInterface
             }
             $this->config['headers']['User-Agent'] = Utils::defaultUserAgent();
         }
+
+        $cached_header = Cache::get('Authorization');
+        if(isset($cached_header) && $cached_header != ''){
+            $this->config['headers']['Authorization'] = $cached_header;
+
+        }
+
     }
 
     /**
